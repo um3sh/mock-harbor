@@ -1,57 +1,32 @@
 # SLSA configuration for Go releaser
 version: 1
 
-# goreleaser configuration
-# https://goreleaser.com/customization/build/
+# Simple configuration that focuses on a single build
 builds:
-  - id: mock-harbor-linux-amd64
+  - id: mock-harbor
     binary: mock-harbor
     main: ./cmd/server
-    goos: [linux]
-    goarch: [amd64]
     env:
       - CGO_ENABLED=0
-      - GOOS=linux
-    ldflags:
-      - -X main.Version={{.Version}}
-  
-  - id: mock-harbor-linux-arm64
-    binary: mock-harbor
-    main: ./cmd/server
-    goos: [linux]
-    goarch: [arm64]
-    env:
-      - CGO_ENABLED=0
-      - GOOS=linux
-    ldflags:
-      - -X main.Version={{.Version}}
-      
-  - id: mock-harbor-darwin-amd64
-    binary: mock-harbor
-    main: ./cmd/server
-    goos: [darwin]
-    goarch: [amd64]
-    env:
-      - CGO_ENABLED=0
-      - GOOS=darwin
-    ldflags:
-      - -X main.Version={{.Version}}
-      
-  - id: mock-harbor-darwin-arm64
-    binary: mock-harbor
-    main: ./cmd/server
-    goos: [darwin]
-    goarch: [arm64]
-    env:
-      - CGO_ENABLED=0
-      - GOOS=darwin
     ldflags:
       - -X main.Version={{.Version}}
 
 # Archive settings (optional)
 archives:
-  - id: archive
+  - id: default
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     format: binary
+
+# Define metadata about this release
+release:
+  draft: false
+  prerelease: false
+  name_template: "{{.Tag}}"
+
+# Checksum settings
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
 
 # Where to publish artifacts
 release:
