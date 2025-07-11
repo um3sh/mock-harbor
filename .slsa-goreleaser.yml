@@ -11,6 +11,7 @@ builds:
     goarch: [amd64]
     env:
       - CGO_ENABLED=0
+      - GOOS=linux
     ldflags:
       - -X main.Version={{.Version}}
   
@@ -21,6 +22,7 @@ builds:
     goarch: [arm64]
     env:
       - CGO_ENABLED=0
+      - GOOS=linux
     ldflags:
       - -X main.Version={{.Version}}
       
@@ -31,6 +33,7 @@ builds:
     goarch: [amd64]
     env:
       - CGO_ENABLED=0
+      - GOOS=darwin
     ldflags:
       - -X main.Version={{.Version}}
       
@@ -41,6 +44,7 @@ builds:
     goarch: [arm64]
     env:
       - CGO_ENABLED=0
+      - GOOS=darwin
     ldflags:
       - -X main.Version={{.Version}}
 
