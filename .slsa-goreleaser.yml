@@ -1,0 +1,44 @@
+version: 1
+
+# Corresponds to the version of the goreleaser config schema
+# https://goreleaser.com/customization/build/
+builds:
+  - id: mock-harbor
+    binary: mock-harbor
+    main: ./cmd/server
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -X main.Version={{.Version}}
+
+# Archive settings (optional)
+archives:
+  - id: archive
+    format: binary
+
+# Where to publish artifacts
+release:
+  # Don't use draft mode when publishing releases
+  draft: false
+  # Wait for manual validation before publishing release
+  prerelease: false
+  # Define metadata about this release
+  name_template: "{{.Tag}}"
+
+# Checksum settings
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+# Sign the checksums file
+signs:
+  - cmd: cosign
+    signature: "${artifact}.sig"
+    args: ["sign-blob", "--output", "${signature}", "${artifact}"]
+    artifacts: checksum
