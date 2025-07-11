@@ -7,7 +7,9 @@ builds:
     binary: mock-harbor
     main: ./cmd/server
     goos:
-    - linux
+      - linux
+    goarch:
+      - amd64
     env:
       - CGO_ENABLED=0
     ldflags:
