@@ -1,17 +1,44 @@
+# SLSA configuration for Go releaser
 version: 1
 
-# Corresponds to the version of the goreleaser config schema
+# goreleaser configuration
 # https://goreleaser.com/customization/build/
 builds:
-  - id: mock-harbor
+  - id: mock-harbor-linux-amd64
     binary: mock-harbor
     main: ./cmd/server
-    goos:
-      - linux
-      - darwin
-    goarch:
-      - amd64
-      - arm64
+    goos: [linux]
+    goarch: [amd64]
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -X main.Version={{.Version}}
+  
+  - id: mock-harbor-linux-arm64
+    binary: mock-harbor
+    main: ./cmd/server
+    goos: [linux]
+    goarch: [arm64]
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -X main.Version={{.Version}}
+      
+  - id: mock-harbor-darwin-amd64
+    binary: mock-harbor
+    main: ./cmd/server
+    goos: [darwin]
+    goarch: [amd64]
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -X main.Version={{.Version}}
+      
+  - id: mock-harbor-darwin-arm64
+    binary: mock-harbor
+    main: ./cmd/server
+    goos: [darwin]
+    goarch: [arm64]
     env:
       - CGO_ENABLED=0
     ldflags:
