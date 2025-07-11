@@ -19,17 +19,6 @@ archives:
 
 # Define metadata about this release
 release:
-  draft: false
-  prerelease: false
-  name_template: "{{.Tag}}"
-
-# Checksum settings
-checksum:
-  name_template: 'checksums.txt'
-  algorithm: sha256
-
-# Where to publish artifacts
-release:
   # Don't use draft mode when publishing releases
   draft: false
   # Wait for manual validation before publishing release
