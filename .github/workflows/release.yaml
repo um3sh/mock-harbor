@@ -60,7 +60,7 @@ jobs:
       id-token: write    # Required for SLSA provenance
       contents: write    # Required for writing to releases
       actions: read      # Required for detecting the Github workflow
-    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v1.5.0
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v2.1.0
     with:
       go-version: '1.24'
       evaluated-envs: "GITHUB_REPOSITORY,GITHUB_REF"
