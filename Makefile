@@ -4,6 +4,9 @@ BINARY_NAME=mock-harbor
 # Main build directory
 BUILD_DIR=dist
 
+# Main package path
+MAIN_PKG=./cmd/server
+
 # Version from git tag (if available)
 VERSION=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 
@@ -31,22 +34,22 @@ build:
 .PHONY: darwin-amd64
 darwin-amd64:
 	@echo "Building for macOS (x86_64)..."
-	@GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-amd64 .
+	@GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-amd64 $(MAIN_PKG)
 
 .PHONY: darwin-arm64
 darwin-arm64:
 	@echo "Building for macOS (arm64)..."
-	@GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-arm64 .
+	@GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-arm64 $(MAIN_PKG)
 
 .PHONY: linux-amd64
 linux-amd64:
 	@echo "Building for Linux (x86_64)..."
-	@GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-linux-amd64 .
+	@GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-linux-amd64 $(MAIN_PKG)
 
 .PHONY: linux-arm64
 linux-arm64:
 	@echo "Building for Linux (arm64)..."
-	@GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-linux-arm64 .
+	@GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-X 'main.Version=$(VERSION)'" -o $(BUILD_DIR)/$(BINARY_NAME)-linux-arm64 $(MAIN_PKG)
 
 # Create SHA256 checksums for all binaries
 .PHONY: checksums
