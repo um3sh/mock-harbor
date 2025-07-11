@@ -1,0 +1,5 @@
+services:
+  - name: serviceA
+    usecase: happypath
+  - name: serviceB
+    usecase: happypath

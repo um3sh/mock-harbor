@@ -1,0 +1,78 @@
+[ 
+  {
+    "request": {
+      "path": "/api/test",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "message": "Hello, World!"
+      },
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "request": {
+      "path": "/api/products",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "products": [
+          {"id": 101, "name": "Laptop", "price": 999.99},
+          {"id": 102, "name": "Smartphone", "price": 699.99},
+          {"id": 103, "name": "Headphones", "price": 199.99},
+          {"id": 104, "name": "Smart Watch", "price": 349.99}
+        ]
+      },
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "request": {
+      "path": "/api/products/101",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "id": 101,
+        "name": "Laptop",
+        "price": 999.99,
+        "description": "High-performance laptop with 16GB RAM",
+        "in_stock": true
+      },
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "request": {
+      "path": "/api/orders",
+      "method": "POST",
+      "body": {
+        "product_id": 101
+      }
+    },
+    "response": {
+      "body": {
+        "order_id": "ORD-12345",
+        "status": "created",
+        "product_id": 101,
+        "timestamp": "2025-07-10T18:00:00Z"
+      },
+      "statusCode": 201,
+      "headers": {
+        "Content-Type": "application/json",
+        "Location": "/api/orders/ORD-12345"
+      }
+    }
+  }
+]

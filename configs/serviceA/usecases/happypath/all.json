@@ -1,0 +1,58 @@
+[
+  {
+    "request": {
+      "path": "/api/users",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "users": [
+          {"id": 1, "name": "John Doe"},
+          {"id": 2, "name": "Jane Smith"}
+        ]
+      },
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "request": {
+      "path": "/api/users/1",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+      },
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "request": {
+      "path": "/api/users",
+      "method": "POST",
+      "body": {
+        "name": "New User"
+      }
+    },
+    "response": {
+      "body": {
+        "id": 3,
+        "name": "New User",
+        "created": true
+      },
+      "statusCode": 201,
+      "headers": {
+        "Content-Type": "application/json",
+        "Location": "/api/users/3"
+      }
+    }
+  }
+]

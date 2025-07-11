@@ -1,0 +1,5 @@
+port: 8082
+name: serviceB
+delay:
+  enabled: true
+  fixed: 1000  # 1 second fixed delay
