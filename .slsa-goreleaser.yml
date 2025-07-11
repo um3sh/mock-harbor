@@ -6,6 +6,8 @@ builds:
   - id: mock-harbor
     binary: mock-harbor
     main: ./cmd/server
+    goos:
+    - linux
     env:
       - CGO_ENABLED=0
     ldflags:
