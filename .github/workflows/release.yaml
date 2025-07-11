@@ -1,0 +1,54 @@
+name: SLSA Go Release
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      id-token: write  # Required for SLSA provenance
+      contents: write  # Required for creating releases
+      actions: read    # Required for detecting the Github workflow run
+    runs-on: ubuntu-24.04
+    name: Build and release using SLSA builder
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+          check-latest: true
+      
+      - name: Build cross-platform binaries
+        run: |
+          make release
+      
+      - name: List built artifacts
+        run: ls -la dist/
+      
+      - name: Generate SLSA provenance for artifacts
+        uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v1.5.0
+        with:
+          go-version: '1.24'
+          artifact-path: dist/
+          go-binary-name: "mock-harbor"
+      
+      - name: Upload artifacts to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/mock-harbor-darwin-amd64
+            dist/mock-harbor-darwin-arm64
+            dist/mock-harbor-linux-amd64
+            dist/mock-harbor-linux-arm64
+            dist/SHA256SUMS
