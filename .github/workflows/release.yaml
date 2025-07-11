@@ -9,7 +9,7 @@ on:
       - fix/github-workflow
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   # Build job to create the binaries using our Makefile
@@ -50,6 +50,8 @@ jobs:
       
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v0.1.0-${{ steps.sha.outputs.sha }}
           name: Release v0.1.0-${{ steps.sha.outputs.sha }}
