@@ -9,13 +9,12 @@ permissions:
   contents: read
 
 jobs:
+  # Build job to create the binaries using our Makefile
   build:
-    permissions:
-      id-token: write  # Required for SLSA provenance
-      contents: write  # Required for creating releases
-      actions: read    # Required for detecting the Github workflow run
     runs-on: ubuntu-24.04
-    name: Build and release using SLSA builder
+    name: Build binaries
+    outputs:
+      digests: ${{ steps.hash.outputs.digests }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,14 +33,15 @@ jobs:
       
       - name: List built artifacts
         run: ls -la dist/
+        
+      - name: Generate artifacts hash
+        id: hash
+        run: |
+          # Generate hash information
+          cd dist
+          echo "digests=$(sha256sum mock-harbor-* | base64 -w0)" >> $GITHUB_OUTPUT
       
-      - name: Generate SLSA provenance for artifacts
-        uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v1.5.0
-        with:
-          go-version: '1.24'
-          artifact-path: dist/
-          go-binary-name: "mock-harbor"
-      
+      # Upload artifacts to release if triggered by a release
       - name: Upload artifacts to GitHub Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
@@ -52,3 +52,16 @@ jobs:
             dist/mock-harbor-linux-amd64
             dist/mock-harbor-linux-arm64
             dist/SHA256SUMS
+
+  # SLSA provenance generation as a separate reusable workflow job
+  provenance:
+    needs: [build]
+    permissions:
+      id-token: write    # Required for SLSA provenance
+      contents: write    # Required for writing to releases
+      actions: read      # Required for detecting the Github workflow
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v1.5.0
+    with:
+      go-version: '1.24'
+      artifact-path: dist/
+      go-binary-name: "mock-harbor"
