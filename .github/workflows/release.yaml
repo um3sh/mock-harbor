@@ -1,4 +1,4 @@
-name: SLSA Go Release
+name: Release
 
 on:
   workflow_dispatch:
@@ -44,12 +44,19 @@ jobs:
           cd dist
           echo "digests=$(sha256sum mock-harbor-* | base64 -w0)" >> $GITHUB_OUTPUT
       
+      - name: Get short SHA
+        id: sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: v0.1.0-${{ steps.sha.outputs.sha }}
+          name: Release v0.1.0-${{ steps.sha.outputs.sha }}
           files: |
             dist/mock-harbor-darwin-amd64
             dist/mock-harbor-darwin-arm64
             dist/mock-harbor-linux-amd64
             dist/mock-harbor-linux-arm64
             dist/SHA256SUMS
+          generate_release_notes: true
